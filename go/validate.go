@@ -682,9 +682,9 @@ func isFieldVisible(field TinyFormField, values url.Values) bool {
 	return field.VisibilityRule[0].Type == "HideWhen" // Default: show for HideWhen, hide for ShowWhen
 }
 
-// sanitizeFormValues removes values for hidden fields, iterating until a stable state is reached.
+// SanitizeFormValues removes values for hidden fields, iterating until a stable state is reached.
 // This prevents hidden fields from affecting the visibility of other fields.
-func sanitizeFormValues(fields []TinyFormField, values url.Values) url.Values {
+func SanitizeFormValues(fields []TinyFormField, values url.Values) url.Values {
 	current := values
 	maxIterations := len(fields) // Maximum possible cascade depth for N fields
 
@@ -730,7 +730,7 @@ func ValidFormValues(formFields []byte, values url.Values) error {
 	}
 
 	// Sanitize values to remove hidden field values before validation
-	sanitized := sanitizeFormValues(fields, values)
+	sanitized := SanitizeFormValues(fields, values)
 
 	return fields.Validate(sanitized)
 }
